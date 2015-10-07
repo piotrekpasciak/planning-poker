@@ -4,6 +4,7 @@
 
 /* Resources from Bower */
 //= require bootstrap/bootstrap
+//= require mdb
 //= require angular/angular
 //= require angular-animate/angular-animate
 //= require angular-resource/angular-resource
