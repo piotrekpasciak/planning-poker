@@ -4,4 +4,19 @@
  *= require_tree .
  *= require_self
  */
-
+.home-page{
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+}
+.home-page-wrapper{
+  flex: 1;
+}
+.poker-room-form{
+  text-align: center;
+}
+.poker-room-button{
+  font-size: 28px;
+  font-weight: bolder;
+  padding: 12px 23px;
+}

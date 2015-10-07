@@ -1,11 +1,14 @@
 //= require app.js
 
 angular.module('ppApp').controller("HomeController", [
-    '$scope',
+    '$scope', 'PokerRoomService',
 
-    function($scope){
+    function($scope, PokerRoomService){
 
-        $scope.test = "Poker to rule them all";
+        $scope.createPokerRoom = function(data){
+            PokerRoomService.createPokerRoomAction(data);
+        };
+
         function init(){
 
         }
