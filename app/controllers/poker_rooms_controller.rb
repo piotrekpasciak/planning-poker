@@ -1,5 +1,4 @@
 class PokerRoomsController < ApplicationController
-
   before_action :set_poker_room, only: [:show]
 
   def new
@@ -7,8 +6,8 @@ class PokerRoomsController < ApplicationController
 
   def show
     respond_to do |format|
-        format.html
-        format.json { render json: @poker_room }
+      format.html
+      format.json { render json: @poker_room }
     end
   end
 
