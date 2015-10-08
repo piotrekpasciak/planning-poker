@@ -12,6 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bower-rails', '~> 0.9.2'
 gem 'pry-rails', '~> 0.3.4'
+gem 'dotenv-rails', '~> 2.0.2'
 
 #Gems added for angularjs
 gem 'angularjs-rails-resource', '~> 2.0.0'
@@ -54,5 +55,4 @@ group :test do
   gem 'capybara-screenshot', '~>1.0.10'
   gem "capybara-webkit"
 end
-
 
