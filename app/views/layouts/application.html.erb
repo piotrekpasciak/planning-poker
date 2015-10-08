@@ -11,7 +11,7 @@
 <% if Rails.env.development? || Rails.env.test? %>
     <base href=<%= ENV["NORMAL_BASE_PATH"] %> />
 <% elsif Rails.env.production? %>
-    <base href="/pgs-poker/" />
+    <base href=<%= ENV["PRODUCTION_BASE_PATH"] %> />
 <% end %>
 
 <!-- Navigation -->
