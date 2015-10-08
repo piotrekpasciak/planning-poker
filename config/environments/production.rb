@@ -10,9 +10,9 @@ Rails.application.configure do
 
   config.assets.js_compressor = :uglifier
 
-  config.action_controller.relative_url_root = "/pgs-poker"
+  #config.action_controller.relative_url_root = "/pgs-poker"
 
-  config.assets.compile = false
+  config.assets.compile = true
 
   config.assets.digest = true
 
