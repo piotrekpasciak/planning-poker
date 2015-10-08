@@ -12,7 +12,7 @@ Rails.application.configure do
 
   config.action_controller.relative_url_root = "/pgs-poker"
 
-  config.assets.compile = true
+  config.assets.compile = false
 
   config.assets.digest = true
 
