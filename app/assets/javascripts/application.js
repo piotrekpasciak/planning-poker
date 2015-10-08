@@ -17,8 +17,4 @@
 //= require angular-ui-bootstrap
 //= require angular-ui-bootstrap-tpls
 
-/* Folder for angular templates in app/assets */
-//= require angular-rails-templates
-//= require_tree ../angular-templates
-
 //= require_tree .
