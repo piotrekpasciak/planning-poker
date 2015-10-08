@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  root 'page#home'
+  resources :poker_rooms, only: [:show, :create]
+
+
+  root 'poker_rooms#new'
 end
