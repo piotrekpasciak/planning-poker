@@ -32,10 +32,10 @@ group :development do
   gem 'rubocop', '~> 0.32.1'
 
   # Capistrano will be configured at deployment
-  # gem 'capistrano', '~> 3.1.0'
-  # gem 'capistrano-rails', '~> 1.1.3'
-  # gem 'capistrano-bundler', '~> 1.1.4'
-  # gem 'capistrano-rvm', '~> 0.1.2'
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-rails', '~> 1.1.3'
+  gem 'capistrano-bundler', '~> 1.1.4'
+  gem 'capistrano-rvm', '~> 0.1.2'
 end
 
 group :development, :test do
