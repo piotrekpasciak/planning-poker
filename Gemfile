@@ -21,6 +21,9 @@ gem 'active_model_serializers', '~> 0.8.3'
 gem 'angular_rails_csrf', '~> 1.0.4'
 gem 'angular-rails-templates', '~> 0.2.0'
 
+#Gems added for websockets
+gem 'em-websocket', '~> 0.5.1'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'

@@ -1,7 +1,13 @@
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
-    <h3>Poker Room</h3>
-    <pre>{{poker_room}}</pre>
+    <h3>Poker Room number {{poker_room.id}}</h3>
+    <div id="chat-log"></div>
+    <div id="form">
+      <input ng-model="userStory" type="text" id="message" class="form-control">
+
+      <button ng-click="sendMessage()" id="send" class="btn btn-primary">Send</button>
+
+      <button id="disconnect" class="btn btn-danger">Disconnect</button>
+    </div>
   </div>
 </div>
-
