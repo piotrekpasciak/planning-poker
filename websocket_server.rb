@@ -4,7 +4,16 @@ require 'json'
 EM.run do
   @clients = []
 
-  EM::WebSocket.start(host: '0.0.0.0', port: '3008') do |ws|
+  EM::WebSocket.start({
+                          host: '0.0.0.0',
+                          port: '3008',
+                          secure: true,
+                          tls_options: {
+                            private_key_file: "/private/key",
+                            cet_chain_file: "/ssl/certificate"
+                          }
+  }) do |ws|
+
     ws.onopen do |handshake|
       path = handshake.path
       path[0] = ""

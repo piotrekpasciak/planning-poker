@@ -10,7 +10,8 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         var socket, host;
 
-        host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
+        //host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
+        host =  "wss://localhost:3008/" + id;
 
         $scope.logs  = [];
         $scope.userStory = "";
