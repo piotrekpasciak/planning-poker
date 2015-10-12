@@ -4,7 +4,7 @@
     <div id="chat-log"></div>
     <div ng-repeat="log in logs">{{log}}</div>
     <div id="form">
-      <input ng-model="userStory" type="text" my-enter="sendMessage()" id="message" class="form-control">
+      <input ng-model="userStory" type="text" enter-pressed="sendMessage()" id="message" class="form-control">
 
       <button ng-click="sendMessage()" id="send" class="btn btn-primary">Send</button>
 

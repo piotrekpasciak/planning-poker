@@ -1,6 +1,6 @@
 //=require app.js
 
-angular.module('ppApp').directive('myEnter', function () {
+angular.module('ppApp').directive('enterPressed', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
