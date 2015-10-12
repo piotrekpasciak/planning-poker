@@ -1,7 +1,5 @@
-require 'thin'
 require 'em-websocket'
 require 'json'
-require 'pry-rails'
 
 EM.run do
   @clients = []
