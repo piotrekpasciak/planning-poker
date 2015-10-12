@@ -6,7 +6,7 @@ EM.run do
 
   EM::WebSocket.start({
                           host: '0.0.0.0',
-                          port: '3008',
+                          port: '8080',
                           secure: true,
                           tls_options: {
                               private_key_file: "/etc/nginx/ssl/server.crt",
