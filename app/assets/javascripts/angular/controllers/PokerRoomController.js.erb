@@ -11,7 +11,7 @@ angular.module('ppApp').controller("PokerRoomController", [
         var socket, host;
 
         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
-        host =  "wss://pgslnx107.pgs-soft.com:8080/" + id;
+        host =  "wss://pgslnx107.pgs-soft.com:3008/" + id;
 
         $scope.logs  = [];
         $scope.userStory = "";
