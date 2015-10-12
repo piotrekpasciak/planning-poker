@@ -7,11 +7,11 @@ EM.run do
   EM::WebSocket.start({
                           host: '0.0.0.0',
                           port: '3008',
-                          # secure: true,
-                          # tls_options: {
-                          #     private_key_file: "/etc/nginx/ssl/server.crt",
-                          #     cet_chain_file: "/etc/nginx/ssl/server.key"
-                          # }
+                          secure: true,
+                          tls_options: {
+                               private_key_file: "/etc/nginx/ssl/server.crt",
+                               cet_chain_file: "/etc/nginx/ssl/server.key"
+                          }
   }) do |ws|
 
     ws.onopen do |handshake|
