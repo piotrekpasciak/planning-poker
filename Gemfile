@@ -23,6 +23,7 @@ gem 'angular-rails-templates', '~> 0.2.0'
 
 #Gems added for websockets
 gem 'em-websocket', '~> 0.5.1'
+gem 'rake', '~> 10.4.2'
 
 group :development do
   gem 'web-console', '~> 2.0'

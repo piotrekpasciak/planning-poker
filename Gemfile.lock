@@ -292,6 +292,7 @@ DEPENDENCIES
   pry-rails (~> 0.3.4)
   quiet_assets (~> 1.1.0)
   rails (= 4.2.1)
+  rake (~> 10.4.2)
   rspec-rails (= 3.3.2)
   rubocop (~> 0.32.1)
   sass-rails (~> 5.0)
