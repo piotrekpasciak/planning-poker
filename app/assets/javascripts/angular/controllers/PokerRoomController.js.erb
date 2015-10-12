@@ -8,11 +8,13 @@ angular.module('ppApp').controller("PokerRoomController", [
         var location = window.location.pathname.split('/');
         var id = location.pop();
 
-        console.log(id);
         var socket, host;
-        host = "ws://localhost:3008/"+id;
 
+        host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
+
+        $scope.logs  = [];
         $scope.userStory = "";
+
 
         function connect() {
             try {
@@ -37,7 +39,9 @@ angular.module('ppApp').controller("PokerRoomController", [
         }
 
         function addMessage(msg) {
-            $("#chat-log").append("<p>" + msg + "</p>");
+            $scope.$apply(function(){
+                $scope.logs.push(msg);
+            });
         }
 
         function updateUserStory(msg){
@@ -69,13 +73,9 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         };
 
-        $('#message').keypress(function(event) {
-            if (event.keyCode == '13') { $scope.sendMessage(); }
-        });
-
-        $("#disconnect").click(function() {
-            socket.close()
-        });
+        $scope.disconnect = function() {
+          socket.close();
+        };
 
         function init(){
             PokerRoomService.getPokerRoomAction(id);
