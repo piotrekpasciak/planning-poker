@@ -9,8 +9,8 @@ EM.run do
                           port: '3008',
                           secure: true,
                           tls_options: {
-                            private_key_file: "/private/key",
-                            cet_chain_file: "/ssl/certificate"
+                              private_key_file: "/etc/nginx/ssl/server.crt",
+                              cet_chain_file: "/etc/nginx/ssl/server.key"
                           }
   }) do |ws|
 
