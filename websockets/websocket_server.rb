@@ -6,12 +6,7 @@ EM.run do
 
   EM::WebSocket.start({
                           host: '0.0.0.0',
-                          port: '3008',
-                          secure: true,
-                          tls_options: {
-                               private_key_file: "/etc/nginx/ssl/server.key;",
-                               cet_chain_file: "/etc/nginx/ssl/server.crt;"
-                          }
+                          port: '3008'
   }) do |ws|
 
     ws.onopen do |handshake|
