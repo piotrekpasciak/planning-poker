@@ -1,11 +1,11 @@
 <div ng-controller="HomeController" class="container home-page">
   <div class="row home-page-wrapper">
 
-    <form id="create" class="poker-room-form">
-      <div class="form-group field">
-        <button ng-click="createPokerRoom()" class="btn btn-primary poker-room-button" id="create-room">Create Room</button>
-      </div>
-    </form>
+
+    <h2>Poker room form</h2>
+    <%= form_for @poker_room, url: {action: "create"}, html: {class: "poker-room-form", id: "poker-room-form"} do |f| %>
+        <%= f.submit "Create Room", class: "btn btn-primary poker-room-button" %>
+    <% end %>
 
   </div>
 </div>

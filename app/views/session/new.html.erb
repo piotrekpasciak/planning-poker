@@ -1,0 +1,12 @@
+<div ng-controller="NameController" class="container home-page">
+  <div class="row home-page-wrapper">
+
+    <h3>Choose your name</h3>
+
+    <%= form_for @user, url: {action: "create"}, html: {class: "name-form", id: "name-form"} do |f| %>
+        <%= f.text_field :name, class: "form-control", id: "name-field" %>
+        <%= f.submit "Create", class: "btn btn-primary name-button" %>
+    <% end %>
+
+  </div>
+</div>

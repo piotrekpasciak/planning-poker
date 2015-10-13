@@ -23,3 +23,12 @@
   background-color: #101010;
   color: white;
 }
+.name-form{
+  display: flex;
+}
+.name-input{
+  flex: 1;
+}
+.name-button{
+  margin-left: 10px;
+}

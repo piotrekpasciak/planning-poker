@@ -1,5 +1,5 @@
-feature "visit home page feature", type: :feature, js: true do
-  scenario "shows me home page" do
+feature "can set name", type: :feature, js: true do
+  scenario "changes my name" do
     visit root_path
 
     within '#poker-room-form' do

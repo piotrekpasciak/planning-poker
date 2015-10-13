@@ -1,6 +1,7 @@
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
     <h3>Poker Room number {{poker_room.id}}</h3>
+    <h4>Your name is: <%= current_user %></h4>
     <div id="chat-log"></div>
     <div ng-repeat="log in logs">{{log}}</div>
     <div id="form">
