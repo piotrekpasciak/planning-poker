@@ -16,7 +16,7 @@ class PokerRoomsController < ApplicationController
   end
 
   def create
-    poker_room = PokerRoom.create
+    poker_room = PokerRoom.create(poker_room_params)
     redirect_to poker_room_path(poker_room)
   end
 
@@ -24,5 +24,9 @@ class PokerRoomsController < ApplicationController
 
   def set_poker_room
     @poker_room = PokerRoom.find(params[:id])
+  end
+
+  def poker_room_params
+    params.require(:poker_room).permit(:user_story)
   end
 end

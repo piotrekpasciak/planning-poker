@@ -13,6 +13,7 @@ angular.module('ppApp').service('PokerRoomService', function($http, $rootScope){
     this.getPokerRoomAction = function(id){
         this.getPokerRoom(id).then(function(successResponse){
             $rootScope.poker_room = successResponse.data;
+            $rootScope.userStory = successResponse.data.user_story;
         },
         function(errorResponse){
             console.log("Error");

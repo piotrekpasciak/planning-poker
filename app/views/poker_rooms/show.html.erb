@@ -5,9 +5,9 @@
     <div id="chat-log"></div>
     <div ng-repeat="log in logs">{{log}}</div>
     <div id="form">
-      <input ng-model="userStory" type="text" enter-pressed="sendMessage()" id="message" class="form-control">
+      <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="message" class="form-control">
 
-      <button ng-click="sendMessage()" id="send" class="btn btn-primary">Send</button>
+      <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary">Send</button>
 
       <button ng-click="disconnect()" id="disconnect" class="btn btn-danger">Disconnect</button>
     </div>

@@ -1,9 +1,9 @@
 //= require app.js
 
 angular.module('ppApp').controller("PokerRoomController", [
-    '$scope', '$timeout', 'PokerRoomService',
+    '$scope', '$rootScope', '$timeout', 'PokerRoomService',
 
-    function($scope, $timeout, PokerRoomService){
+    function($scope, $rootScope, $timeout, PokerRoomService){
 
         var location = window.location.pathname.split('/');
         var id = location.pop();
@@ -11,8 +11,10 @@ angular.module('ppApp').controller("PokerRoomController", [
         var socket, host;
 
         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
+        host =  "ws://localhost:3008/" + id;
 
         $scope.logs  = [];
+
         $scope.userStory = "";
 
 
@@ -29,13 +31,17 @@ angular.module('ppApp').controller("PokerRoomController", [
                 };
 
                 socket.onmessage = function(msg) {
-                    updateUserStory(msg.data);
+                    msg = JSON.parse(msg.data);
+                    if(msg.type == "info"){
+                        console.log(msg)
+                    }
+                    else if(msg.type == "update_story"){
+                        updateUserStory(msg.message)
+                    }
                 }
             } catch(exception) {
                 addMessage("Error: " + exception);
             }
-
-
         }
 
         function addMessage(msg) {
@@ -50,12 +56,12 @@ angular.module('ppApp').controller("PokerRoomController", [
             });
         }
 
-        $scope.sendMessage = function(){
+        $scope.sendMessage = function(type, text, room){
 
             var message = {
-                type: 1,
-                text: $scope.userStory,
-                room: $scope.poker_room.id
+                type: type,
+                text: text,
+                room: room
             };
 
             message = JSON.stringify(message);
@@ -77,8 +83,19 @@ angular.module('ppApp').controller("PokerRoomController", [
           socket.close();
         };
 
+        getPokerRoomAction = function(id){
+            PokerRoomService.getPokerRoom(id).then(function(successResponse){
+                        $rootScope.poker_room = successResponse.data;
+                        $scope.sendMessage("poker_room", successResponse.data.user_story, id);
+                        console.log(successResponse.data);
+                    },
+                    function(errorResponse){
+                        console.log("Error");
+                    });
+        };
+
         function init(){
-            PokerRoomService.getPokerRoomAction(id);
+            getPokerRoomAction(id);
             connect();
         }
 

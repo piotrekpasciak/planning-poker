@@ -1,11 +1,15 @@
-<div ng-controller="HomeController" class="container home-page">
+<div class="container home-page">
   <div class="row home-page-wrapper">
 
+    <h2 class="container">Poker room form</h2>
 
-    <h2>Poker room form</h2>
+    <div class="col-lg-6 col-md-6 col-sm-8">
     <%= form_for @poker_room, url: {action: "create"}, html: {class: "poker-room-form", id: "poker-room-form"} do |f| %>
+        <%= f.label(:user_story, "User story for room:") %>
+        <%= f.text_field :user_story, class: "form-control" %>
         <%= f.submit "Create Room", class: "btn btn-primary poker-room-button" %>
     <% end %>
+    </div>
 
   </div>
 </div>
