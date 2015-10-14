@@ -12,6 +12,13 @@ feature "visit home page feature", type: :feature, js: true do
       click_on 'Create'
     end
 
-    expect(page).to have_content 'Poker Room'
+    within '#user-story-form' do
+      fill_in 'user-story', with: 'Register funcionality'
+      click_on 'Send'
+    end
+
+    visit poker_room_path(1)
+
+    expect(find_field('user-story').value).to eq 'Register funcionality'
   end
 end

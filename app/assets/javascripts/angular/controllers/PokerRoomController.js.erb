@@ -11,7 +11,7 @@ angular.module('ppApp').controller("PokerRoomController", [
         var socket, host;
 
         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
-        host =  "ws://localhost:3008/" + id;
+        host =  "ws://localhost:3006/" + id;
 
         $scope.logs  = [];
 
@@ -85,9 +85,8 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         getPokerRoomAction = function(id){
             PokerRoomService.getPokerRoom(id).then(function(successResponse){
-                        $rootScope.poker_room = successResponse.data;
                         $scope.sendMessage("poker_room", successResponse.data.user_story, id);
-                        console.log(successResponse.data);
+                        $rootScope.poker_room = successResponse.data;
                     },
                     function(errorResponse){
                         console.log("Error");

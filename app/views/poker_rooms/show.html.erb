@@ -4,8 +4,8 @@
     <h4>Your name is: <%= current_user %></h4>
     <div id="chat-log"></div>
     <div ng-repeat="log in logs">{{log}}</div>
-    <div id="form">
-      <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="message" class="form-control">
+    <div id="user-story-form">
+      <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="user-story" class="form-control">
 
       <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary">Send</button>
 
