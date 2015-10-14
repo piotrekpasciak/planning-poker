@@ -11,7 +11,7 @@ angular.module('ppApp').controller("PokerRoomController", [
         var socket, host;
 
         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
-        host =  "ws://localhost:3006/" + id;
+        host =  "ws://localhost:3008/" + id;
 
         $scope.logs  = [];
 

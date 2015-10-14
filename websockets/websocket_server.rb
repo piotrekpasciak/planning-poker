@@ -7,7 +7,7 @@ EM.run do
   @rooms = []
   @rooms_ids = []
 
-  EM::WebSocket.start(host: '0.0.0.0', port: '3006') do |ws|
+  EM::WebSocket.start(host: '0.0.0.0', port: '3008') do |ws|
     ws.onopen do |handshake|
       path = handshake.path
       path[0] = ""
@@ -29,7 +29,7 @@ EM.run do
       puts "Received Message: #{msg}"
       if message["type"] == "user_story"
 
-        @rooms.map! { |room| (room[:id] ==  message["room"])? { id: room[:id], text: message["text"] } : room }
+        @rooms.map! { |room| (room[:id] == message["room"]) ? { id: room[:id], text: message["text"] } : room }
 
         @clients.each do |socket|
           if message["room"] == socket.instance_variable_get(:@room)
