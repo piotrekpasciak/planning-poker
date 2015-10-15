@@ -3,7 +3,7 @@
 angular.module('ppApp').controller("PokerRoomController", [
     '$scope', '$rootScope', '$timeout', 'PokerRoomService',
 
-    function($scope, $rootScope, $timeout, PokerRoomService){
+    function($scope, $rootScope, $timeout, PokerRoomService) {
 
         var location = window.location.pathname.split('/');
         var id = location.pop();
@@ -97,7 +97,7 @@ angular.module('ppApp').controller("PokerRoomController", [
                                 + "&user_story=" + $scope.poker_room.user_story;
                         connect();
                 },
-                function(errorResponse){
+                function(errorResponse) {
                     console.log("Error");
                 });
         };

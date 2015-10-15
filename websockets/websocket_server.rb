@@ -20,11 +20,11 @@ EM.run do
 
       my_room_users.each do |client|
         if client.instance_variable_get(:@name) == name
-          if (name[-1] =~ /[0-9]/) == nil
-             name = name + "1"
+          if (name[-1] =~ /[0-9]/).nil?
+            name += "1"
           elsif name[-1] == "9"
-             name[-1] = ""
-             name = name + "10"
+            name[-1] = ""
+            name += "10"
           elsif (name[-1] =~ /[0-9]/) == 0
             name[-1] = (name[-1].to_i + 1).to_s
           end
@@ -93,4 +93,3 @@ EM.run do
     end
   end
 end
-
