@@ -1,7 +1,6 @@
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
     <h3>Poker Room number {{poker_room.id}}</h3>
-    <h4>Your name is: <%= current_user %></h4>
     <div id="chat-log"></div>
     <div ng-repeat="log in logs">{{log}}</div>
     <div id="user-story-form">
@@ -11,5 +10,11 @@
 
       <button ng-click="disconnect()" id="disconnect" class="btn btn-danger">Disconnect</button>
     </div>
+
+    <h4>Online users list:</h4>
+    <ul ng-repeat="user in onlineUsers">
+      <li ng-class="{'red-text': current_user == user}">{{user}}</li>
+    </ul>
+
   </div>
 </div>

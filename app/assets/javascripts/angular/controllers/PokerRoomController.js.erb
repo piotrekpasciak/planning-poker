@@ -10,13 +10,9 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         var socket, host;
 
-        host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/" + id;
-        host =  "ws://localhost:3008/" + id;
-
         $scope.logs  = [];
 
         $scope.userStory = "";
-
 
         function connect() {
             try {
@@ -32,10 +28,19 @@ angular.module('ppApp').controller("PokerRoomController", [
 
                 socket.onmessage = function(msg) {
                     msg = JSON.parse(msg.data);
-                    if(msg.type == "info"){
-                        console.log(msg)
+                    console.log(msg);
+                    if(msg.type == "info") {
                     }
-                    else if(msg.type == "update_story"){
+                    else if(msg.type == "room_status") {
+                        $scope.onlineUsers = msg.users;
+                        updateUserStory(msg.message)
+                    }
+                    else if(msg.type == "users_list") {
+                        $scope.$apply(function(){
+                            $scope.onlineUsers = msg.users;
+                        });
+                    }
+                    else if(msg.type == "update_story") {
                         updateUserStory(msg.message)
                     }
                 }
@@ -45,18 +50,18 @@ angular.module('ppApp').controller("PokerRoomController", [
         }
 
         function addMessage(msg) {
-            $scope.$apply(function(){
+            $scope.$apply(function() {
                 $scope.logs.push(msg);
             });
         }
 
-        function updateUserStory(msg){
+        function updateUserStory(msg) {
             $scope.$apply(function () {
                $scope.userStory = msg;
             });
         }
 
-        $scope.sendMessage = function(type, text, room){
+        $scope.sendMessage = function(type, text, room) {
 
             var message = {
                 type: type,
@@ -74,7 +79,7 @@ angular.module('ppApp').controller("PokerRoomController", [
             try {
                 socket.send(message);
             } catch(exception) {
-                addMessage("Failed To Send");
+                console.log("Error occurred while connecting to websockets!")
             }
 
         };
@@ -83,19 +88,22 @@ angular.module('ppApp').controller("PokerRoomController", [
           socket.close();
         };
 
-        getPokerRoomAction = function(id){
-            PokerRoomService.getPokerRoom(id).then(function(successResponse){
-                        $scope.sendMessage("poker_room", successResponse.data.user_story, id);
-                        $rootScope.poker_room = successResponse.data;
-                    },
-                    function(errorResponse){
-                        console.log("Error");
-                    });
+        initializePokerRoomAction = function(id) {
+            PokerRoomService.getPokerRoom(id).then(function(successResponse) {
+                        $scope.poker_room = successResponse.data.poker_room;
+                        $scope.current_user = $scope.poker_room.user_name;
+
+                        host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/?room=" + id + "&name=" + $scope.current_user
+                                + "&user_story=" + $scope.poker_room.user_story;
+                        connect();
+                },
+                function(errorResponse){
+                    console.log("Error");
+                });
         };
 
-        function init(){
-            getPokerRoomAction(id);
-            connect();
+        function init() {
+            initializePokerRoomAction(id);
         }
 
         init();

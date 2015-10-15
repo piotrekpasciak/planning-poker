@@ -6,12 +6,11 @@ class PokerRoomsController < ApplicationController
   end
 
   def show
-    session[:last_room] = @poker_room.id
-    return redirect_to new_session_path if current_user.nil?
+    return redirect_to new_poker_room_session_path(@poker_room.id) if current_user.nil?
 
     respond_to do |format|
       format.html
-      format.json { render json: @poker_room }
+      format.json { render json: @poker_room, serializer: PokerRoomSerializer }
     end
   end
 

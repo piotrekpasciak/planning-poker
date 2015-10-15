@@ -4,11 +4,9 @@ class SessionController < ApplicationController
   end
 
   def create
-    session[:user_name] = user_params[:name]
+    session[:user] = { name: user_params[:name], room: params[:poker_room_id].to_i }
 
-    return redirect_to root_path if session[:last_room].nil?
-
-    redirect_to poker_room_path(session[:last_room])
+    redirect_to poker_room_path(params[:poker_room_id].to_i)
   end
 
   private
