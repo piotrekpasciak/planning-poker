@@ -30,6 +30,7 @@ angular.module('ppApp').controller("PokerRoomController", [
                     msg = JSON.parse(msg.data);
                     console.log(msg);
                     if(msg.type == "info") {
+                        //Information about completion of connecting to websocket proccess
                     }
                     else if(msg.type == "room_status") {
                         $scope.onlineUsers = msg.users;
