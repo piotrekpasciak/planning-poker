@@ -3,6 +3,9 @@
  *= require_tree .
  *= require_self
  */
+.red-text{
+  color: red;
+}
 .home-page{
   min-height: 400px;
   display: flex;
@@ -29,6 +32,19 @@
 .name-button{
   margin-left: 10px;
 }
-.red-text{
-  color: red;
+.user-story-form{
+  margin-top: 15px;
+}
+.user-story-input-wrapper{
+  display: flex;
+}
+.user-story-input{
+  flex: 1;
+}
+.user-story-button{
+  margin-left: 10px;
+}
+.user-story-marks-wrapper{
+  margin-top: 15px;
+  text-align: center;
 }

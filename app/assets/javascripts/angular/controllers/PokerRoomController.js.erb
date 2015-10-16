@@ -34,7 +34,8 @@ angular.module('ppApp').controller("PokerRoomController", [
                     }
                     else if(msg.type == "room_status") {
                         $scope.onlineUsers = msg.users;
-                        updateUserStory(msg.message)
+                        $scope.current_user = msg.new_name;
+                        updateUserStory(msg.message);
                     }
                     else if(msg.type == "users_list") {
                         $scope.$apply(function(){
@@ -42,7 +43,10 @@ angular.module('ppApp').controller("PokerRoomController", [
                         });
                     }
                     else if(msg.type == "update_story") {
-                        updateUserStory(msg.message)
+                        updateUserStory(msg.message);
+                    }
+                    else if(msg.type == "update_vote") {
+                        updateVote(msg);
                     }
                 }
             } catch(exception) {
@@ -62,12 +66,19 @@ angular.module('ppApp').controller("PokerRoomController", [
             });
         }
 
-        $scope.sendMessage = function(type, text, room) {
+        function updateVote(msg){
+            $scope.$apply(function(){
+                user = _.find($scope.onlineUsers, function(user){ return user.name == msg.name; });
+                _.extend(user, {name: msg.name, vote: msg.message })
+            });
+        }
 
+        $scope.sendMessage = function(type, text, room, name) {
             var message = {
                 type: type,
                 text: text,
-                room: room
+                room: room,
+                name: name
             };
 
             message = JSON.stringify(message);
@@ -82,7 +93,6 @@ angular.module('ppApp').controller("PokerRoomController", [
             } catch(exception) {
                 console.log("Error occurred while connecting to websockets!")
             }
-
         };
 
         $scope.disconnect = function() {

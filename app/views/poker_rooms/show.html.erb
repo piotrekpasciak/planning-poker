@@ -1,20 +1,29 @@
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
-    <h3>Poker Room number {{poker_room.id}}</h3>
-    <div id="chat-log"></div>
-    <div ng-repeat="log in logs">{{log}}</div>
-    <div id="user-story-form">
-      <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="user-story" class="form-control">
+    <div class="col-lg-7 col-md-7 col-sm-7">
+      <h3>Poker Room number {{poker_room.id}}</h3>
+      <div ng-repeat="log in logs">{{log}}</div>
+      <div id="user-story-form" class="user-story-form">
+        <div class="user-story-input-wrapper">
+          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="user-story" class="form-control user-story-input">
 
-      <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary">Send</button>
+          <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary user-story-button">Send</button>
 
-      <button ng-click="disconnect()" id="disconnect" class="btn btn-danger">Disconnect</button>
+          <button ng-click="disconnect()" id="disconnect" class="btn btn-danger user-story-button">Disconnect</button>
+        </div>
+        <div class="user-story-marks-wrapper">
+          <button ng-click="sendMessage('vote', '1', poker_room.id, current_user)" class="btn btn-primary">1</button>
+          <button ng-click="sendMessage('vote', '2', poker_room.id, current_user)" class="btn btn-primary">2</button>
+          <button ng-click="sendMessage('vote', '4', poker_room.id, current_user)" class="btn btn-primary">4</button>
+        </div>
+      </div>
     </div>
 
-    <h4>Online users list:</h4>
-    <ul ng-repeat="user in onlineUsers">
-      <li ng-class="{'red-text': current_user == user}">{{user}}</li>
-    </ul>
-
+    <div class="col-lg-5 col-md-5 col-sm-5">
+      <h3>Online users list:</h3>
+      <ul ng-repeat="user in onlineUsers">
+        <li ng-class="{'red-text': current_user == user.name}">{{user.name}} : {{user.vote}}</li>
+      </ul>
+    </div>
   </div>
 </div>
