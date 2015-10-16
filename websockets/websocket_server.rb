@@ -66,7 +66,7 @@ EM.run do
 
       my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room }
 
-      my_room_users_names = my_room_users.map { |user| user.instance_variable_get(:@name) }
+      my_room_users_names = my_room_users.map { |user| { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
 
       my_room_users.each do |socket|
         if socket.signature == ws.signature
