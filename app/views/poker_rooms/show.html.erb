@@ -5,11 +5,14 @@
       <div ng-repeat="log in logs">{{log}}</div>
       <div id="user-story-form" class="user-story-form">
         <div class="user-story-input-wrapper">
-          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story' , userStory, poker_room.id)" id="user-story" class="form-control user-story-input">
+          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control user-story-input">
 
           <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary user-story-button">Send</button>
 
           <button ng-click="disconnect()" id="disconnect" class="btn btn-danger user-story-button">Disconnect</button>
+        </div>
+        <div class="votes-actions-wrapper">
+          <button ng-click="sendMessage('show_votes')" id="show-all" class="btn btn-warning">Show all votes</button>
         </div>
         <div class="user-story-marks-wrapper">
           <span ng-repeat="vote in votes">

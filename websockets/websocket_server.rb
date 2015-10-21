@@ -19,15 +19,15 @@ EM.run do
       my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == room }
 
       my_room_users.each do |client|
-        if client.instance_variable_get(:@name) == name
-          if (name[-1] =~ /[0-9]/).nil?
-            name += "1"
-          elsif name[-1] == "9"
-            name[-1] = ""
-            name += "10"
-          elsif (name[-1] =~ /[0-9]/) == 0
-            name[-1] = (name[-1].to_i + 1).to_s
-          end
+        next unless client.instance_variable_get(:@name) == name
+
+        if (name[-1] =~ /[0-9]/).nil?
+          name += "1"
+        elsif name[-1] == "9"
+          name[-1] = ""
+          name += "10"
+        elsif (name[-1] =~ /[0-9]/) == 0
+          name[-1] = (name[-1].to_i + 1).to_s
         end
       end
 
@@ -37,8 +37,10 @@ EM.run do
 
       @clients << ws
 
-      unless @rooms_ids.include?(room) || params.nil?
-        @rooms << { id: room, text: user_story }
+      if @rooms_ids.include?(room)
+        @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "hidden_votes" } : room }
+      else
+        @rooms << { id: room, text: user_story, status: "hidden_votes" }
         @rooms_ids << room
       end
 
@@ -68,23 +70,35 @@ EM.run do
     ws.onclose do
       @clients.delete ws
 
-      my_room = ws.instance_variable_get(:@room)
+      my_room = @rooms.detect { |r| r[:id] == ws.instance_variable_get(:@room) }
 
-      my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room }
+      my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room[:id] }
 
-      my_room_users.each do |socket|
-        my_room_users_names = my_room_users.map do |user|
-          if user.signature == socket.signature || user.instance_variable_get(:@vote) == ""
-            { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) }
+      if my_room[:status] == "hidden_votes"
+        my_room_users.each do |socket|
+          my_room_users_names = my_room_users.map do |user|
+            if user.signature == socket.signature || user.instance_variable_get(:@vote) == ""
+              { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) }
+            else
+              { name: user.instance_variable_get(:@name), vote: "✓" }
+            end
+          end
+
+          if socket.signature == ws.signature
+            socket.send({ type: :room_status, message: my_room[:text], users: my_room_users_names }.to_json)
           else
-            { name: user.instance_variable_get(:@name), vote: "✓" }
+            socket.send({ type: :users_list, users: my_room_users_names }.to_json)
           end
         end
+      elsif my_room[:status] == "shown_votes"
+        my_room_users_names = my_room_users.map { |user| { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
 
-        if socket.signature == ws.signature
-          socket.send({ type: :room_status, message: my_room[:text], users: my_room_users_names }.to_json)
-        else
-          socket.send({ type: :users_list, users: my_room_users_names }.to_json)
+        my_room_users.each do |socket|
+          if socket.signature == ws.signature
+            socket.send({ type: :room_status, message: my_room[:text], users: my_room_users_names }.to_json)
+          else
+            socket.send({ type: :users_list, users: my_room_users_names }.to_json)
+          end
         end
       end
     end
@@ -95,26 +109,46 @@ EM.run do
       puts "Received Message: #{msg}"
 
       if message["type"] == "user_story"
-        @rooms.map! { |room| (room[:id] == message["room"]) ? { id: room[:id], text: message["text"] } : room }
+        @rooms.map! { |room| (room[:id] == message["room"]) ? { id: room[:id], text: message["text"], status: room[:status] } : room }
 
         @clients.each do |socket|
           if message["room"] == socket.instance_variable_get(:@room)
             socket.send({ type: :update_story, message: message["text"] }.to_json)
           end
         end
-      end
+      elsif message["type"] == "vote"
+        my_room = @rooms.detect { |r| r[:id] == ws.instance_variable_get(:@room) }
 
-      if message["type"] == "vote"
-        @clients.each do |socket|
-          if message["room"] == socket.instance_variable_get(:@room)
+        if my_room[:status] == "hidden_votes"
+          @clients.each do |socket|
+            next unless message["room"] == socket.instance_variable_get(:@room)
+
             if socket.instance_variable_get(:@name) == message["name"]
               socket.instance_variable_set(:@vote, message["text"])
               socket.send({ type: :update_vote, message: message["text"], name: message["name"] }.to_json)
             else
               socket.send({ type: :update_vote, message: "✓", name: message["name"] }.to_json)
             end
-
           end
+        elsif my_room[:status] == "shown_votes"
+          @clients.each do |socket|
+            if socket.instance_variable_get(:@name) == message["name"]
+              socket.instance_variable_set(:@vote, message["text"])
+            end
+            socket.send({ type: :update_vote, message: message["text"], name: message["name"] }.to_json)
+          end
+        end
+      elsif message["type"] == "show_votes"
+        @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "shown_votes" } : room }
+
+        my_room = ws.instance_variable_get(:@room)
+
+        my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room }
+
+        my_room_users_names = my_room_users.map { |user| {  name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
+
+        @clients.each do |socket|
+          socket.send({ type: :users_list, users: my_room_users_names }.to_json)
         end
       end
     end
