@@ -1,5 +1,4 @@
 module WebsocketUtility
-
   class WebsocketData
     def self.room(rooms, id)
       rooms.detect { |r| r[:id] == id }
@@ -43,5 +42,4 @@ module WebsocketUtility
       name
     end
   end
-
 end

@@ -28,7 +28,7 @@ EM.run do
       @clients << ws
 
       if @rooms_ids.include?(room)
-        @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "hidden_votes" } : room }
+        @rooms.map! { |r| (r[:id] == ws.instance_variable_get(:@room)) ? { id: r[:id], text: r[:text], status: "hidden_votes" } : r }
       else
         @rooms << { id: room, text: user_story, status: "hidden_votes" }
         @rooms_ids << room
@@ -143,4 +143,3 @@ EM.run do
     end
   end
 end
-
