@@ -1,2 +1,13 @@
+# == Schema Information
+#
+# Table name: poker_rooms
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_story :string
+#
+
 class PokerRoom < ActiveRecord::Base
+  has_many :summaries
 end

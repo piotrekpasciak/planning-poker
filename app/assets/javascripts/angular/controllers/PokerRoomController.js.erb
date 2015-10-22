@@ -1,9 +1,9 @@
 //= require app.js
 
 angular.module('ppApp').controller("PokerRoomController", [
-    '$scope', '$rootScope', '$timeout', 'PokerRoomService',
+    '$scope', '$rootScope', '$timeout', 'PokerRoomService', 'SummaryService',
 
-    function($scope, $rootScope, $timeout, PokerRoomService) {
+    function($scope, $rootScope, $timeout, PokerRoomService, SummaryService) {
 
         var location = window.location.pathname.split('/');
         var id = location.pop();
@@ -30,7 +30,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
                 socket.onmessage = function(msg) {
                     msg = JSON.parse(msg.data);
-                    console.log(msg);
+                    //console.log(msg);
                     if(msg.type == "info") {
                         //Information about completion of connecting to websocket server
                     }
@@ -51,6 +51,15 @@ angular.module('ppApp').controller("PokerRoomController", [
                     }
                     else if(msg.type == "update_vote") {
                         updateVote(msg);
+                    }
+                    else if(msg.type == "summary") {
+                        var summary = { summary: { story: $scope.userStory, votes: msg.message, poker_room_id: id }};
+                        SummaryService.createSummary(id, summary).then(function(successResponse){
+                                    $scope.summaries.push(successResponse.data);
+                                }, function(errorResponse){
+                                    console.log("Cannot get summaries");
+                                }
+                        )
                     }
                 }
             } catch(exception) {
@@ -75,6 +84,14 @@ angular.module('ppApp').controller("PokerRoomController", [
                 user = _.find($scope.onlineUsers, function(user){ return user.name == msg.name; });
                 _.extend(user, {name: msg.name, vote: msg.message })
             });
+        }
+
+        function getSummaries(id){
+            $scope.summaries = SummaryService.getSummaries(id).then(function(successResponse){
+                $scope.summaries = successResponse.data.summaries;
+            }, function(errorResponse){
+                console.log("Couldn't get summaries")
+            })
         }
 
         $scope.sendMessage = function(type, text, room, name) {
@@ -119,6 +136,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         function init() {
             initializePokerRoomAction(id);
+            getSummaries(id);
         }
 
         init();

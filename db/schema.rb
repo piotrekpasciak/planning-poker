@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013140537) do
+ActiveRecord::Schema.define(version: 20151022104309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,4 +22,15 @@ ActiveRecord::Schema.define(version: 20151013140537) do
     t.string   "user_story"
   end
 
+  create_table "summaries", force: :cascade do |t|
+    t.string   "story"
+    t.text     "votes"
+    t.integer  "poker_room_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "summaries", ["poker_room_id"], name: "index_summaries_on_poker_room_id", using: :btree
+
+  add_foreign_key "summaries", "poker_rooms"
 end
