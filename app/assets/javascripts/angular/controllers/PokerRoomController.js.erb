@@ -106,7 +106,8 @@ angular.module('ppApp').controller("PokerRoomController", [
         initializePokerRoomAction = function(id) {
             PokerRoomService.getPokerRoom(id).then(function(successResponse) {
                         $scope.poker_room = successResponse.data.poker_room;
-                        $scope.current_user = $scope.poker_room.user_name;
+                        $scope.current_user = $scope.po      room_users.map { |user| { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
+ker_room.user_name;
 
                         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/?room=" + id + "&name=" + $scope.current_user
                                 + "&user_story=" + $scope.poker_room.user_story;

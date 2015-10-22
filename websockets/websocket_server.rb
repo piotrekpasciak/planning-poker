@@ -1,6 +1,9 @@
 require 'em-websocket'
 require 'json'
 require 'pry-rails'
+require_relative 'websocket_utility'
+
+include WebsocketUtility
 
 EM.run do
   @clients = []
@@ -16,20 +19,7 @@ EM.run do
       name = params["name"].first
       user_story = params["user_story"].first
 
-      my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == room }
-
-      my_room_users.each do |client|
-        next unless client.instance_variable_get(:@name) == name
-
-        if (name[-1] =~ /[0-9]/).nil?
-          name += "1"
-        elsif name[-1] == "9"
-          name[-1] = ""
-          name += "10"
-        elsif (name[-1] =~ /[0-9]/) == 0
-          name[-1] = (name[-1].to_i + 1).to_s
-        end
-      end
+      name = RenameUser.rename_user(@clients, room, name)
 
       ws.instance_variable_set(:@room, room)
       ws.instance_variable_set(:@name, name)
@@ -44,23 +34,16 @@ EM.run do
         @rooms_ids << room
       end
 
-      my_room = @rooms.detect { |r| r[:id] == room }
+      my_room = WebsocketData.room(@rooms, room)
+      my_room_users = WebsocketData.room_users(@clients, room)
 
-      my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == room }
+      my_room_users.each do |user|
+        my_room_users_list = WebsocketData.room_users_list_hidden(my_room_users, user)
 
-      my_room_users.each do |socket|
-        my_room_users_names = my_room_users.map do |user|
-          if user.signature == socket.signature || user.instance_variable_get(:@vote) == ""
-            { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) }
-          else
-            { name: user.instance_variable_get(:@name), vote: "✓" }
-          end
-        end
-
-        if socket.signature == ws.signature
-          socket.send({ type: :room_status, message: my_room[:text], users: my_room_users_names, new_name: name }.to_json)
+        if user.signature == ws.signature
+          user.send({ type: :room_status, message: my_room[:text], users: my_room_users_list, new_name: name }.to_json)
         else
-          socket.send({ type: :users_list, users: my_room_users_names }.to_json)
+          user.send({ type: :users_list, users: my_room_users_list }.to_json)
         end
       end
 
@@ -70,28 +53,21 @@ EM.run do
     ws.onclose do
       @clients.delete ws
 
-      my_room = @rooms.detect { |r| r[:id] == ws.instance_variable_get(:@room) }
-
-      my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room[:id] }
+      my_room = WebsocketData.room(@rooms, ws.instance_variable_get(:@room))
+      my_room_users = WebsocketData.room_users(@clients, my_room[:id])
 
       if my_room[:status] == "hidden_votes"
-        my_room_users.each do |socket|
-          my_room_users_names = my_room_users.map do |user|
-            if user.signature == socket.signature || user.instance_variable_get(:@vote) == ""
-              { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) }
-            else
-              { name: user.instance_variable_get(:@name), vote: "✓" }
-            end
-          end
+        my_room_users.each do |user|
+          my_room_users_names = WebsocketData.room_users_list_hidden(my_room_users, user)
 
-          if socket.signature == ws.signature
-            socket.send({ type: :room_status, message: my_room[:text], users: my_room_users_names }.to_json)
+          if user.signature == ws.signature
+            user.send({ type: :room_status, message: my_room[:text], users: my_room_users_names }.to_json)
           else
-            socket.send({ type: :users_list, users: my_room_users_names }.to_json)
+            user.send({ type: :users_list, users: my_room_users_names }.to_json)
           end
         end
       elsif my_room[:status] == "shown_votes"
-        my_room_users_names = my_room_users.map { |user| { name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
+        my_room_users_names = WebsocketData.room_users_list_shown(my_room_users)
 
         my_room_users.each do |socket|
           if socket.signature == ws.signature
@@ -117,10 +93,11 @@ EM.run do
           end
         end
       elsif message["type"] == "vote"
-        my_room = @rooms.detect { |r| r[:id] == ws.instance_variable_get(:@room) }
+        my_room = WebsocketData.room(@rooms, ws.instance_variable_get(:@room))
+        my_room_users = WebsocketData.room_users(@clients, my_room[:id])
 
         if my_room[:status] == "hidden_votes"
-          @clients.each do |socket|
+          my_room_users.each do |socket|
             next unless message["room"] == socket.instance_variable_get(:@room)
 
             if socket.instance_variable_get(:@name) == message["name"]
@@ -131,7 +108,7 @@ EM.run do
             end
           end
         elsif my_room[:status] == "shown_votes"
-          @clients.each do |socket|
+          my_room_users.each do |socket|
             if socket.instance_variable_get(:@name) == message["name"]
               socket.instance_variable_set(:@vote, message["text"])
             end
@@ -141,16 +118,29 @@ EM.run do
       elsif message["type"] == "show_votes"
         @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "shown_votes" } : room }
 
-        my_room = ws.instance_variable_get(:@room)
-
-        my_room_users = @clients.select { |client| client.instance_variable_get(:@room) == my_room }
+        my_room_users = WebsocketData.room_users(@clients, ws.instance_variable_get(:@room))
 
         my_room_users_names = my_room_users.map { |user| {  name: user.instance_variable_get(:@name), vote: user.instance_variable_get(:@vote) } }
 
-        @clients.each do |socket|
+        my_room_users.each do |socket|
+          socket.send({ type: :users_list, users: my_room_users_names }.to_json)
+        end
+      elsif message["type"] == "clear_votes"
+        @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "hidden_votes" } : room }
+
+        my_room_users = WebsocketData.room_users(@clients, ws.instance_variable_get(:@room))
+
+        my_room_users.each do |user|
+          user.instance_variable_set(:@vote, "")
+        end
+
+        my_room_users_names = WebsocketData.room_users_list_shown(my_room_users)
+
+        my_room_users.each do |socket|
           socket.send({ type: :users_list, users: my_room_users_names }.to_json)
         end
       end
     end
   end
 end
+
