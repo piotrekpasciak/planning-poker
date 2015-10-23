@@ -1,6 +1,6 @@
 class SummariesController < ApplicationController
   def index
-    summaries = Summary.where(poker_room_id: params[:poker_room_id])
+    summaries = PokerRoom.find(params[:poker_room_id]).summaries
     render json: summaries, status: :ok
   end
 

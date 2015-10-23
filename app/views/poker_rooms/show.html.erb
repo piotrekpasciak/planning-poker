@@ -25,7 +25,6 @@
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5">
-      <pre>{{onlineUsers}}</pre>
       <h3>Online users list:</h3>
       <ul ng-repeat="user in onlineUsers">
         <li ng-class="{'red-text': current_user == user.name}">{{user.name}} : {{user.vote}}</li>
@@ -33,7 +32,7 @@
 
       <div>
         <h3>Summary</h3>
-        <ul ng-repeat="summary in summaries ">
+        <ul ng-repeat="summary in summaries | reverse" class="list-without-padding">
           <p  ng-click="summary.visible = !summary.visible">{{summary.story}} : {{summary.created_at  | date:'medium' }}</p>
           <ul ng-if="summary.visible" ng-repeat="vote in summary.votes">
             <li>{{vote.name}} : {{vote.vote}}</li>

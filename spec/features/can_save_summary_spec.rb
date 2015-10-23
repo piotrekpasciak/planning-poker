@@ -1,5 +1,5 @@
-feature "can create poker room", type: :feature, js: true do
-  scenario "shows me poker room" do
+feature "can save summary", type: :feature, js: true, focus: true do
+  scenario "can see summary record" do
     visit root_path
 
     within '#poker-room-form' do
@@ -12,6 +12,9 @@ feature "can create poker room", type: :feature, js: true do
       click_on 'Create'
     end
 
-    expect(page).to have_content 'Poker Room'
+    click_on '1'
+    click_on 'Clear all votes'
+
+    expect(page).to have_content 'Login funcionality :'
   end
 end
