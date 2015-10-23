@@ -10,7 +10,7 @@
 
         <%= f.label(:votes, "Votes for room:") %>
         <div ng-repeat="i in getNumber(buttons_number) track by $index">
-            <input multiple="multiple" value="{{powerOfTwo($index)}}" id="votes-input" class="form-control poker-room-vote-input" type="text" name="poker_room[votes][]">
+            <input multiple="multiple" value="{{default_votes[$index]}}" id="votes-input" class="form-control poker-room-vote-input" type="text" name="poker_room[votes][]">
         </div>
         <div>
             <p ng-click="addButton()" class="btn btn-primary">+</p>
