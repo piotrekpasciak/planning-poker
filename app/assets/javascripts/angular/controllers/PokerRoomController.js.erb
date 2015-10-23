@@ -30,7 +30,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
                 socket.onmessage = function(msg) {
                     msg = JSON.parse(msg.data);
-                    //console.log(msg);
+                    console.log(msg);
                     if(msg.type == "info") {
                         //Information about completion of connecting to websocket server
                     }
