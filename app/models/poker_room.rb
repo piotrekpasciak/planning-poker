@@ -10,4 +10,6 @@
 
 class PokerRoom < ActiveRecord::Base
   has_many :summaries
+
+  serialize :votes, Array
 end

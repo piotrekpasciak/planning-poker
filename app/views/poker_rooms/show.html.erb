@@ -32,7 +32,7 @@
 
       <div>
         <h3>Summary</h3>
-        <ul ng-repeat="summary in summaries | reverse" class="list-without-padding">
+        <ul ng-repeat="summary in summaries.slice().reverse()" class="list-without-padding">
           <p  ng-click="summary.visible = !summary.visible">{{summary.story}} : {{summary.created_at  | date:'medium' }}</p>
           <ul ng-if="summary.visible" ng-repeat="vote in summary.votes">
             <li>{{vote.name}} : {{vote.vote}}</li>

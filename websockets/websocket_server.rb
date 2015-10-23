@@ -131,8 +131,6 @@ EM.run do
         my_room_users = WebsocketData.room_users(@clients, ws.instance_variable_get(:@room))
         my_room_users_names = WebsocketData.room_users_list_shown(my_room_users)
 
-        my_room_users_names.map { |u| [u[:name], u[:vote]] }
-
         my_room_users.each do |user|
           user.send({ type: :summary, message: my_room_users_names }.to_json)
           user.instance_variable_set(:@vote, "")

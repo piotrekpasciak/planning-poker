@@ -1,4 +1,4 @@
-<div class="container home-page">
+<div ng-controller="HomeController" class="container home-page">
   <div class="row home-page-wrapper">
 
     <h2 class="container">Poker room form</h2>
@@ -7,6 +7,16 @@
     <%= form_for @poker_room, url: {action: "create"}, html: {class: "poker-room-form", id: "poker-room-form"} do |f| %>
         <%= f.label(:user_story, "User story for room:") %>
         <%= f.text_field :user_story, class: "form-control" %>
+
+        <%= f.label(:votes, "Votes for room:") %>
+        <div ng-repeat="i in getNumber(buttons_number) track by $index">
+            <input multiple="multiple" value="{{powerOfTwo($index)}}" id="votes-input" class="form-control poker-room-vote-input" type="text" name="poker_room[votes][]">
+        </div>
+        <div>
+            <p ng-click="addButton()" class="btn btn-primary">+</p>
+            <p ng-click="removeButton()" class="btn btn-primary">-</p>
+        </div>
+
         <%= f.submit "Create Room", class: "btn btn-primary poker-room-button" %>
     <% end %>
     </div>

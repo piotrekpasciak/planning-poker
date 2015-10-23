@@ -9,7 +9,7 @@
 #
 
 class PokerRoomSerializer < ActiveModel::Serializer
-  attributes :id, :user_story, :user_name
+  attributes :id, :user_story, :user_name, :votes
 
   def user_name
     current_user["name"]

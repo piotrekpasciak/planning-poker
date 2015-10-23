@@ -14,6 +14,4 @@ class Summary < ActiveRecord::Base
   belongs_to :poker_room
 
   serialize :votes, Array
-
-  validates :story, :votes, :poker_room_id, presence: true
 end

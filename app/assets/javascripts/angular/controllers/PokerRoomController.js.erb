@@ -14,7 +14,11 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         $scope.userStory = "";
 
-        $scope.votes = [1, 2, 4, 8, 16, 32];
+        $scope.votes = [];
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
 
         function connect() {
             try {
@@ -124,6 +128,7 @@ angular.module('ppApp').controller("PokerRoomController", [
             PokerRoomService.getPokerRoom(id).then(function(successResponse) {
                         $scope.poker_room = successResponse.data.poker_room;
                         $scope.current_user = $scope.poker_room.user_name;
+                        $scope.votes = $scope.poker_room.votes.filter( onlyUnique );
 
                         host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/?room=" + id + "&name=" + $scope.current_user
                                 + "&user_story=" + $scope.poker_room.user_story;

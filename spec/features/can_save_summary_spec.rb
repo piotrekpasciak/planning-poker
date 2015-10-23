@@ -1,4 +1,4 @@
-feature "can save summary", type: :feature, js: true, focus: true do
+feature "can save summary", type: :feature, js: true do
   scenario "can see summary record" do
     visit root_path
 
