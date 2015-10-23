@@ -15,7 +15,9 @@ class PokerRoomsController < ApplicationController
   end
 
   def create
-    poker_room = PokerRoom.create(poker_room_params)
+    votes = params[:poker_room][:votes].select { |v| v != "" }
+
+    poker_room = PokerRoom.create(poker_room_params.merge(votes: votes))
 
     redirect_to poker_room_path(poker_room)
   end
@@ -27,6 +29,6 @@ class PokerRoomsController < ApplicationController
   end
 
   def poker_room_params
-    params.require(:poker_room).permit(:user_story, votes: [])
+    params.require(:poker_room).permit(:user_story)
   end
 end
