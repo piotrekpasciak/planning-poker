@@ -27,7 +27,6 @@ class PokerRoomsController < ApplicationController
   end
 
   def poker_room_params
-
     params.require(:poker_room).permit(:user_story, votes: [])
   end
 end
