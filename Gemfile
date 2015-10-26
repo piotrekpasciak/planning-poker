@@ -26,6 +26,9 @@ gem 'angular-rails-templates', '~> 0.2.0'
 gem 'em-websocket', '~> 0.5.1'
 gem 'rake', '~> 10.4.2'
 
+#Gems added for front-end
+gem 'font-awesome-rails', '~> 4.4'
+
 group :development do
   gem 'web-console', '~> 2.0'
   gem 'spring'
@@ -37,7 +40,7 @@ group :development do
   gem 'better_errors', '~> 2.1.1'
   gem 'rubocop', '~> 0.32.1'
 
-  # Capistrano will be configured at deployment
+  # Capistrano
   gem 'capistrano', '~> 3.1.0'
   gem 'capistrano-rails', '~> 1.1.3'
   gem 'capistrano-bundler', '~> 1.1.4'

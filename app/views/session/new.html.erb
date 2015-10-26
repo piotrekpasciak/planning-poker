@@ -1,12 +1,13 @@
 <div class="container home-page">
-  <div class="row home-page-wrapper">
-
-    <h3>Choose your name</h3>
-
-    <%= form_for @user, url: {action: "create"}, html: {class: "name-form", id: "name-form"} do |f| %>
-        <%= f.text_field :name, class: "form-control", id: "name-field" %>
-        <%= f.submit "Create", class: "btn btn-primary name-button" %>
-    <% end %>
-
+  <div class="row row-centered home-page-wrapper">
+    <div class="col-lg-6 col-md-6 col-sm-8 col-centered">
+        <h1 class="pgs-header pgs-header-home">Choose your name:</h1>
+        <%= form_for @user, url: {action: "create"}, html: {id: "name-form"} do |f| %>
+        <%= f.text_field :name, placeholder: "Your name...", class: "form-control pgs-input", id: "name-field" %>
+          <div class="form-buttons-wrapper">
+            <%= f.submit "Create", class: "btn btn-primary pgs-button form-votes-button pull-right" %>
+          </div>
+        <% end %>
+    </div>
   </div>
 </div>

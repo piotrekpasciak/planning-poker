@@ -1,44 +1,52 @@
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
     <div class="col-lg-7 col-md-7 col-sm-7">
-      <h3>Poker Room number {{poker_room.id}}</h3>
-      <div ng-repeat="log in logs">{{log}}</div>
+      <h3 class="pgs-small-header">Poker Room number {{poker_room.id}}</h3>
       <div id="user-story-form" class="user-story-form">
         <div class="user-story-input-wrapper">
-          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control user-story-input">
+          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control pgs-input user-story-input">
 
-          <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary user-story-button">Send</button>
+          <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary pgs-button send-story-button">Send</button>
 
-          <button ng-click="disconnect()" id="disconnect" class="btn btn-danger user-story-button">Disconnect</button>
         </div>
         <div class="votes-actions-wrapper">
-          <button ng-click="sendMessage('show_votes')" id="show-all" class="btn btn-warning">Show all votes</button>
-          <button ng-click="sendMessage('clear_votes')" id="clear-all" class="btn btn-danger">Clear all votes</button>
+          <button ng-click="sendMessage('show_votes')" id="show-all" class="btn pgs-button-2">Show all votes</button>
+          <button ng-click="sendMessage('clear_votes')" id="clear-all" class="btn pgs-button-2">Clear all votes</button>
         </div>
-        <div class="user-story-marks-wrapper">
-          <span ng-repeat="vote in votes">
-            <button ng-click="sendMessage('vote', vote, poker_room.id, current_user)" class="btn btn-primary vote-button">{{vote}}</button>
-            <br ng-if="($index + 1) % 3 == 0"/>
-          </span>
+        <div class="form-votes-container">
+          <div ng-repeat="vote in votes" class="form-votes-wrapper">
+            <button ng-click="sendMessage('vote', vote, poker_room.id, current_user)" class="pgs-button pgs-vote-button">{{vote}}</button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5">
-      <h3>Online users list:</h3>
+      <h3 class="pgs-small-header">Online users list:</h3>
       <ul ng-repeat="user in onlineUsers">
-        <li ng-class="{'red-text': current_user == user.name}">{{user.name}} : {{user.vote}}</li>
+        <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : {{user.vote}}</li>
       </ul>
 
+      <div class="text-center connection-status-wrapper">
+        <div ng-switch="info" class="logs-wrapper">
+          <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
+          <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
+        </div>
+        <button ng-click="disconnect()" id="disconnect" class="btn pgs-button-2 pgs-red-button logs-wrapper">Disconnect</button>
+      </div>
+
       <div>
-        <h3>Summary</h3>
-        <ul ng-repeat="summary in summaries.slice().reverse()" class="list-without-padding">
-          <p  ng-click="summary.visible = !summary.visible">{{summary.story}} : {{summary.created_at  | date:'medium' }}</p>
-          <ul ng-if="summary.visible" ng-repeat="vote in summary.votes">
-            <li>{{vote.name}} : {{vote.vote}}</li>
-          </ul>
+        <h3 class="pgs-small-header">Summary:</h3>
+        <ul class="summary-list">
+          <li ng-repeat="summary in summaries.slice().reverse()"  ng-click="summary.visible = !summary.visible" class="list-without-padding summary-list-element pgs-orange-cell">
+            <p class="summary-list-heading"><span class="summary-text">{{summary.story}}</span><span class="pull-right">{{summary.created_at  | date:'mediumTime' }}</span></p>
+            <ul ng-if="summary.visible" ng-repeat="vote in summary.votes" class="summary-inner-list">
+              <li ng-class="{'green-text': current_user == vote.name}" class="pgs-list-element">{{vote.name}} : {{vote.vote}}</li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
   </div>
+
 </div>

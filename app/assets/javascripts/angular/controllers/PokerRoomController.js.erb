@@ -10,7 +10,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         var socket, host;
 
-        $scope.logs  = [];
+        $scope.info  = "";
 
         $scope.userStory = "";
 
@@ -25,11 +25,11 @@ angular.module('ppApp').controller("PokerRoomController", [
                 socket = new WebSocket(host);
 
                 socket.onopen = function() {
-                    addMessage("Connection Status: OPEN");
+                    addMessage("OPEN");
                 };
 
                 socket.onclose = function() {
-                    addMessage("Connection Status: CLOSED");
+                    addMessage("CLOSED");
                 };
 
                 socket.onmessage = function(msg) {
@@ -73,7 +73,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
         function addMessage(msg) {
             $scope.$apply(function() {
-                $scope.logs.push(msg);
+                $scope.info = msg;
             });
         }
 
