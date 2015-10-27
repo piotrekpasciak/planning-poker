@@ -34,7 +34,7 @@
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5">
-      <h3 class="pgs-small-header">Online users list:</h3>
+      <h3 class="pgs-small-header text-center">Online users list:</h3>
       <ul ng-repeat="user in onlineUsers">
         <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : <span ng-if="user.vote == '✓'"><i class="fa fa-check"></i></span><span ng-if="user.vote != '✓'">{{user.vote}}</span></li>
       </ul>
