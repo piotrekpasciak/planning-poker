@@ -205,7 +205,7 @@ h1, h2, h3 {
 .pgs-orange-cell{
   border: 3px solid #ff7726;
   border-radius: 0;
-  color: #ff7726;
+  color: #353535;
   display: inline-block;
   font-size: 16px;
   outline: 0;
@@ -278,12 +278,15 @@ h1, h2, h3 {
   margin-right:-4px;
 }
 .connection-status-wrapper{
-  margin-top: 25px;
+  position: absolute;
+  bottom: 0;
+  text-align: right;
+  padding-right: 15px;
+
 }
 .logs-wrapper{
   display: inline-block;
   vertical-align: bottom;
-  margin-bottom: 15px;
 }
 .pgs-list-element{
   list-style:  none;

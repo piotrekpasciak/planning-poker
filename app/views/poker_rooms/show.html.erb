@@ -11,29 +11,14 @@
         </div>
         <div class="votes-actions-wrapper">
           <button ng-click="sendMessage('show_votes')" id="show-all" class="btn pgs-button-2">Show all votes</button>
-          <button ng-click="sendMessage('clear_votes')" id="clear-all" class="btn pgs-button-2">Clear all votes</button>
+          <button ng-click="sendMessage('clear_votes')" id="clear-all" class="btn pgs-button-2">New round</button>
         </div>
         <div class="form-votes-container">
           <div ng-repeat="vote in votes" class="form-votes-wrapper">
             <button ng-click="sendMessage('vote', vote, poker_room.id, current_user)" class="pgs-button pgs-vote-button">{{vote}}</button>
           </div>
         </div>
-      </div>
     </div>
-
-    <div class="col-lg-5 col-md-5 col-sm-5">
-      <h3 class="pgs-small-header">Online users list:</h3>
-      <ul ng-repeat="user in onlineUsers">
-        <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : {{user.vote}}</li>
-      </ul>
-
-      <div class="text-center connection-status-wrapper">
-        <div ng-switch="info" class="logs-wrapper">
-          <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
-          <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
-        </div>
-        <button ng-click="disconnect()" id="disconnect" class="btn pgs-button-2 pgs-red-button logs-wrapper">Disconnect</button>
-      </div>
 
       <div>
         <h3 class="pgs-small-header">Summary:</h3>
@@ -47,6 +32,25 @@
         </ul>
       </div>
     </div>
-  </div>
 
+    <div class="col-lg-5 col-md-5 col-sm-5">
+      <h3 class="pgs-small-header">Online users list:</h3>
+      <ul ng-repeat="user in onlineUsers">
+        <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : <span ng-if="user.vote == '✓'"><i class="fa fa-check"></i></span><span ng-if="user.vote != '✓'">{{user.vote}}</span></li>
+      </ul>
+    </div>
+
+
+
+      <div class="connection-status-wrapper">
+        <div class="container">
+          <div ng-switch="info" class="logs-wrapper">
+            <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
+            <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
+          </div>
+          <button ng-click="disconnect()" id="disconnect" class="btn pgs-button-2 pgs-red-button"><i class="fa fa-sign-out"></i></button>
+        </div>
+      </div>
+
+  </div>
 </div>
