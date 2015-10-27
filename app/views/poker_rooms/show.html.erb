@@ -1,7 +1,10 @@
+<overlay></overlay>
+
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
     <div class="col-lg-7 col-md-7 col-sm-7">
       <h3 class="pgs-small-header">Poker Room number {{poker_room.id}}</h3>
+      <h1>{{ models.no_connection }}</h1>
       <div id="user-story-form" class="user-story-form">
         <div class="user-story-input-wrapper">
           <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control pgs-input user-story-input">
@@ -40,17 +43,18 @@
       </ul>
     </div>
 
-
-
-      <div class="connection-status-wrapper">
+    <div class="connection-status-container">
         <div class="container">
-          <div ng-switch="info" class="logs-wrapper">
-            <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
-            <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
+          <div class="col-lg-5 col-md-5 col-sm-5 col-lg-offset-7 col-md-offset-7 col-sm-offset-7 text-center">
+            <div class="connection-status-wrapper">
+              <div ng-switch="info" class="logs-wrapper">
+                <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
+                <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
+              </div>
+            </div>
           </div>
-          <button ng-click="disconnect()" id="disconnect" class="btn pgs-button-2 pgs-red-button"><i class="fa fa-sign-out"></i></button>
         </div>
-      </div>
+    </div>
 
   </div>
 </div>

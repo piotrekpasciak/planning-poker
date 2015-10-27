@@ -29,6 +29,7 @@ angular.module('ppApp').controller("PokerRoomController", [
                 };
 
                 socket.onclose = function() {
+                    $rootScope.$emit("overlay-show");
                     addMessage("CLOSED");
                 };
 
@@ -67,8 +68,10 @@ angular.module('ppApp').controller("PokerRoomController", [
                     }
                 }
             } catch(exception) {
+                $rootScope.$emit("overlay-show");
                 addMessage("Error: " + exception);
             }
+
         }
 
         function addMessage(msg) {
