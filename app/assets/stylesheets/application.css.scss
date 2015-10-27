@@ -340,13 +340,13 @@ h1, h2, h3 {
   z-index: 100;
   color: #ff7726;
 }
-.overlay-message-inner-wrapper{
+.overlay-message-wrapper > div{
   padding: 20px 25px;
   background-color: white;
   border: 3px solid #ff7726;
   display: inline-block;
 }
-.overlay-message{
+.overlay-message-wrapper > div > h1{
   z-index: 100;
   margin: 0 auto;
   font-size: 50px;
