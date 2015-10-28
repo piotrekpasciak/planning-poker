@@ -297,6 +297,7 @@ h1, h2, h3 {
   font-size: 16px;
   line-height: 17px;
   padding-left: 21px;
+  word-break: break-all;
 }
 .summary-list{
   padding-left: 0;
@@ -308,6 +309,7 @@ h1, h2, h3 {
   padding: 10px 20px;
 }
 .summary-list-heading{
+  display: flex;
   background-color: #ff7726;
   color: white;
   margin-bottom: 0;
@@ -319,6 +321,8 @@ h1, h2, h3 {
   font-size: 16px;
 }
 .summary-text{
+  flex: 1;
+  word-break: break-all;
   margin-right: 15px;
 }
 .overlay-no-connection{
@@ -350,4 +354,20 @@ h1, h2, h3 {
   z-index: 100;
   margin: 0 auto;
   font-size: 50px;
+}
+.user-error-message{
+  margin-left: 5px;
+}
+.custom-error-box{
+  margin-bottom: 10px;
+  padding: 7px 10px;
+  background-color: #ce2323;
+  border-radius: 0;
+  color: white;
+  font-weight: bolder;
+}
+.red-border{
+  border-color: rgba(239, 0, 18, 0.8);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(239, 0, 0, 0.6);
+  outline: 0 none;
 }

@@ -3,7 +3,14 @@
     <div class="col-lg-6 col-md-6 col-sm-8 col-centered">
         <h1 class="pgs-header pgs-header-home">Choose your name:</h1>
         <%= form_for @user, url: {action: "create"}, html: {id: "name-form"} do |f| %>
-        <%= f.text_field :name, placeholder: "Your name...", class: "form-control pgs-input", id: "name-field" %>
+          <% if @user.errors.any? %>
+              <div class="alert alert-danger custom-error-box" role="alert">
+                <% @user.errors.full_messages.each do |msg| %>
+                    <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message"><%= msg %></span></p>
+                <% end %>
+              </div>
+          <% end %>
+        <%= f.text_field :name, placeholder: "Your name...", class: "form-control pgs-input #{ @user.errors.any? ? 'red-border' : ''}", id: "name-field" %>
           <div class="form-buttons-wrapper">
             <%= f.submit "Create", class: "btn btn-primary pgs-button form-votes-button pull-right" %>
           </div>

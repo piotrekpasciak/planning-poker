@@ -6,15 +6,19 @@
       <h3 class="pgs-small-header">Poker Room number {{poker_room.id}}</h3>
       <h1>{{ models.no_connection }}</h1>
       <div id="user-story-form" class="user-story-form">
+
+        <div ng-if="error" class="alert alert-danger custom-error-box" role="alert">
+          <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message">{{error}}</span></p>
+        </div>
+
         <div class="user-story-input-wrapper">
-          <input ng-model="userStory" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control pgs-input user-story-input">
+          <input my-maxlength="150" ng-model="userStory" ng-class="{'red-border': error}" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control pgs-input user-story-input">
 
           <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary pgs-button send-story-button">Send</button>
-
         </div>
         <div class="votes-actions-wrapper">
           <button ng-click="sendMessage('show_votes')" id="show-all" class="btn pgs-button-2">Show all votes</button>
-          <button ng-click="sendMessage('clear_votes')" id="clear-all" class="btn pgs-button-2">New round</button>
+          <button ng-click="sendMessage('clear_votes', userStory)" id="clear-all" class="btn pgs-button-2">New round</button>
         </div>
         <div class="form-votes-container">
           <div ng-repeat="vote in votes" class="form-votes-wrapper">

@@ -102,24 +102,33 @@ angular.module('ppApp').controller("PokerRoomController", [
         }
 
         $scope.sendMessage = function(type, text, room, name) {
-            var message = {
-                type: type,
-                text: text,
-                room: room,
-                name: name
-            };
-
-            message = JSON.stringify(message);
-
-            if(message.text == '') {
-                addMessage("Please Enter a Message");
-                return;
+            if((type == "user_story" || type == "clear_votes") && !text) {
+                $scope.error = "User story cannot be empty!"
             }
+            else if((type == "user_story" || type == "clear_votes")&& text.length > 150) {
+                $scope.error = "User story cannot be longer then 150 characters!"
+            }
+            else {
+                $scope.error = false;
+                var message = {
+                    type: type,
+                    text: text,
+                    room: room,
+                    name: name
+                };
 
-            try {
-                socket.send(message);
-            } catch(exception) {
-                console.log("Error occurred while connecting to websockets!")
+                message = JSON.stringify(message);
+
+                if(message.text == '') {
+                    addMessage("Please Enter a Message");
+                    return;
+                }
+
+                try {
+                    socket.send(message);
+                } catch(exception) {
+                    console.log("Error occurred while connecting to websockets!")
+                }
             }
         };
 

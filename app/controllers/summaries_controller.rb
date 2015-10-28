@@ -1,6 +1,6 @@
 class SummariesController < ApplicationController
   def index
-    summaries = PokerRoom.find(params[:poker_room_id]).summaries
+    summaries = PokerRoom.find(params[:poker_room_id]).summaries.order(created_at: :desc).limit(100).reverse
     render json: summaries, status: :ok
   end
 
