@@ -6,7 +6,7 @@
           <% if @user.errors.any? %>
               <div class="alert alert-danger custom-error-box" role="alert">
                 <% @user.errors.full_messages.each do |msg| %>
-                    <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message"><%= msg %></span></p>
+                    <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message"><%= msg %>!</span></p>
                 <% end %>
               </div>
           <% end %>

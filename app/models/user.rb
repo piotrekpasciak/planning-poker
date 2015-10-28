@@ -6,6 +6,7 @@ class User
   attr_accessor :name
 
   validates :name, presence: true
+  validates :name, length: { maximum: 100 }
 
   def initialize(attributes = {})
     attributes.each do |name, value|
