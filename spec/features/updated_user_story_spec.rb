@@ -3,7 +3,7 @@ feature "visit home page feature", type: :feature, js: true do
     visit root_path
 
     within '#poker-room-form' do
-      fill_in 'poker_room_user_story', with: 'Login funcionality'
+      fill_in 'poker_room_user_story', with: 'Login functionality'
       click_on 'Create Room'
     end
 
@@ -13,12 +13,12 @@ feature "visit home page feature", type: :feature, js: true do
     end
 
     within '#user-story-form' do
-      fill_in 'user-story', with: 'Register funcionality'
+      fill_in 'user-story', with: 'Register functionality'
       click_on 'Send'
     end
 
     visit poker_room_path(1)
 
-    expect(find_field('user-story').value).to eq 'Register funcionality'
+    expect(find_field('user-story').value).to eq 'Register functionality'
   end
 end
