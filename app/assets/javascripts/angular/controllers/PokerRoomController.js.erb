@@ -106,7 +106,7 @@ angular.module('ppApp').controller("PokerRoomController", [
                 $scope.error = "User story cannot be empty!"
             }
             else if((type == "user_story" || type == "clear_votes")&& text.length > 150) {
-                $scope.error = "User story cannot be longer then 150 characters!"
+                $scope.error = "User story cannot be longer than 150 characters!"
             }
             else {
                 $scope.error = false;
