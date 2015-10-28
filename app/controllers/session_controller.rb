@@ -7,13 +7,9 @@ class SessionController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
-    unless @user.valid?
-      return respond_with @user
-    end
+    return respond_with @user unless @user.valid?
 
     session[:user] = { name: user_params[:name], room: params[:poker_room_id].to_i }
-
     redirect_to poker_room_path(params[:poker_room_id].to_i)
   end
 
