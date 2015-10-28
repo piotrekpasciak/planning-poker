@@ -84,7 +84,7 @@ EM.run do
 
       puts "Received Message: #{msg}"
 
-      if message["type"] == "user_story" && message["text"] != "" && message["text"] != nil
+      if message["type"] == "user_story" && message["text"] != "" && !message["text"].nil?
         @rooms.map! { |room| (room[:id] == message["room"]) ? { id: room[:id], text: message["text"], status: room[:status] } : room }
 
         @clients.each do |socket|
@@ -125,7 +125,7 @@ EM.run do
         my_room_users.each do |socket|
           socket.send({ type: :users_list, users: my_room_users_names }.to_json)
         end
-      elsif message["type"] == "clear_votes" && message["text"] != "" && message["text"] != nil
+      elsif message["type"] == "clear_votes" && message["text"] != "" && !message["text"].nil?
         @rooms.map! { |room| (room[:id] == ws.instance_variable_get(:@room)) ? { id: room[:id], text: room[:text], status: "hidden_votes" } : room }
 
         my_room_users = WebsocketData.room_users(@clients, ws.instance_variable_get(:@room))
