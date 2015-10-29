@@ -35,7 +35,7 @@ angular.module('ppApp').controller("PokerRoomController", [
 
                 socket.onmessage = function(msg) {
                     msg = JSON.parse(msg.data);
-                    console.log(msg);
+                    //console.log(msg);
                     if(msg.type == "info") {
                         //Information about completion of connecting to websocket server
                     }
@@ -58,13 +58,20 @@ angular.module('ppApp').controller("PokerRoomController", [
                         updateVote(msg);
                     }
                     else if(msg.type == "summary") {
-                        var summary = { summary: { story: $scope.userStory, votes: msg.message, poker_room_id: id }};
-                        SummaryService.createSummary(id, summary).then(function(successResponse){
-                                    $scope.summaries.push(successResponse.data);
-                                }, function(errorResponse){
-                                    console.log("Cannot get summaries");
-                                }
-                        )
+                        var summary = { summary: { story: $scope.userStory, votes: msg.message, created_at: Date.now(), poker_room_id: id }};
+                        if(msg.owner){
+                            SummaryService.createSummary(id, summary).then(function(successResponse){
+                                        console.log(successResponse.data);
+                                        $scope.summaries.push(successResponse.data);
+                                    }, function(errorResponse){
+                                        console.log("Cannot get summaries");
+                                    }
+                            )
+                        }
+                        else {
+                            $scope.summaries.push(summary.summary);
+                        }
+
                     }
                 }
             } catch(exception) {
@@ -130,6 +137,22 @@ angular.module('ppApp').controller("PokerRoomController", [
                     console.log("Error occurred while connecting to websockets!")
                 }
             }
+        };
+
+        $scope.sendSummaryAction = function(email) {
+            if(email) {
+                $scope.emailError = "";
+                SummaryService.sendSummary(id, { email: email }).then(function(successResponse) {
+                    $scope.emailResponse = { type: "success", message: "Email was sent successfully!"};
+                    console.log(successResponse.data);
+                }, function(errorResponse){
+                    console.log("Can't send email with summaries");
+                })
+            }
+            else {
+                $scope.emailResponse = { type: "error", message: "Email is incorrect!"};
+            }
+
         };
 
         $scope.disconnect = function() {

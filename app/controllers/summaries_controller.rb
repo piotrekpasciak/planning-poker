@@ -9,9 +9,18 @@ class SummariesController < ApplicationController
     render json: summary, status: :ok
   end
 
+  def send_email
+    HardWorker.perform_async(params[:poker_room_id], email_params)
+    render json: email_params.to_json, status: :ok
+  end
+
   private
 
   def summary_params
-    params.require(:summary).permit(:story, :votes, :poker_room_id)
+    params.require(:summary).permit(:story, :votes, :poker_room_id, :created_at)
+  end
+
+  def email_params
+    params.require(:email)
   end
 end

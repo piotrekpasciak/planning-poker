@@ -358,13 +358,18 @@ h1, h2, h3 {
 .user-error-message{
   margin-left: 5px;
 }
-.custom-error-box{
+.custom-box{
   margin-bottom: 10px;
   padding: 7px 10px;
-  background-color: #ce2323;
   border-radius: 0;
   color: white;
   font-weight: bolder;
+}
+.error-box{
+  background-color: #ce2323;
+}
+.success-box{
+  background-color: #00a561;
 }
 .red-border{
   border-color: rgba(239, 0, 18, 0.8);

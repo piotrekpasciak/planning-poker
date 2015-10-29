@@ -6,6 +6,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  user_story :string
+#  votes      :text
 #
 
 class PokerRoomSerializer < ActiveModel::Serializer

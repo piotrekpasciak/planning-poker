@@ -4,7 +4,7 @@
         <h1 class="pgs-header pgs-header-home">Choose your name:</h1>
         <%= form_for @user, url: {action: "create"}, html: {id: "name-form"} do |f| %>
           <% if @user.errors.any? %>
-              <div class="alert alert-danger custom-error-box" role="alert">
+              <div class="alert alert-danger custom-box error-box" role="alert">
                 <% @user.errors.full_messages.each do |msg| %>
                     <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message"><%= msg %>!</span></p>
                 <% end %>

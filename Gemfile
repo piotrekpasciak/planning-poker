@@ -14,6 +14,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'bower-rails', '~> 0.9.2'
 gem 'pry-rails', '~> 0.3.4'
 gem 'dotenv-rails', '~> 2.0.2'
+gem 'sidekiq', '~> 3.5', '>= 3.5.2'
 
 #Gems added for angularjs
 gem 'angularjs-rails-resource', '~> 2.0.0'

@@ -4,10 +4,9 @@
   <div class="row home-page-wrapper">
     <div class="col-lg-7 col-md-7 col-sm-7">
       <h3 class="pgs-small-header">Poker Room number {{poker_room.id}}</h3>
-      <h1>{{ models.no_connection }}</h1>
       <div id="user-story-form" class="user-story-form">
 
-        <div ng-if="error" class="alert alert-danger custom-error-box" role="alert">
+        <div ng-if="error" class="alert alert-danger custom-box error-box" role="alert">
           <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message">{{error}}</span></p>
         </div>
 
@@ -41,6 +40,15 @@
     </div>
 
     <div class="col-lg-5 col-md-5 col-sm-5">
+      <h3 class="pgs-small-header text-center">Send summary:</h3>
+      <div ng-if="emailResponse" ng-class="{'error-box' : emailResponse.type == 'error', 'success-box' :emailResponse.type == 'success' }" class="alert alert-danger custom-box" role="alert">
+        <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message">{{emailResponse.message}}</span></p>
+      </div>
+      <div class="user-story-input-wrapper">
+        <input my-maxlength="100" ng-model="userEmail" ng-class="{'red-border': emailError}" type="email" id="user-email" class="form-control pgs-input user-story-input">
+        <button ng-click="sendSummaryAction(userEmail)" id="send" class="btn btn-primary pgs-button send-story-button">Send</button>
+      </div>
+
       <h3 class="pgs-small-header text-center">Online users list:</h3>
       <ul ng-repeat="user in onlineUsers">
         <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : <span ng-if="user.vote == '✓'"><i class="fa fa-check"></i></span><span ng-if="user.vote != '✓'">{{user.vote}}</span></li>

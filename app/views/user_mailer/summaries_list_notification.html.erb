@@ -1,0 +1,18 @@
+<p>Hi,</p>
+
+<p>Poker room has following summary:</p>
+
+<ul>
+  <% unless @summaries.empty? %>
+      <% @summaries.each do |summary| %>
+          <h3><%= summary.story %></h3>
+          <ul>
+            <% summary.votes.each do |vote| %>
+                <li><strong><%= vote[:name] %></strong> : <%= vote[:vote] %></li>
+            <% end %>
+          </ul>
+      <% end %>
+  <% end %>
+</ul>
+
+<p>PGS Poker Team</p>
