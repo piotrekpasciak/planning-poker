@@ -14,6 +14,6 @@ FactoryGirl.define do
   factory :summary do
     story "User can Login to application"
     votes [{ name: "Pszemek", vote: "" }, { name: "Kamil", vote: "8" }, { name: "Zbyszek", vote: "3" }]
-    poker_room factory: :poker_room
+    poker_room
   end
 end
