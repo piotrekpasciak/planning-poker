@@ -10,7 +10,7 @@ class SummariesController < ApplicationController
   end
 
   def send_email
-    HardWorker.perform_async(params[:poker_room_id], email_params)
+    SummariesListNotificationJob.perform_later(params[:poker_room_id], email_params)
     render json: email_params.to_json, status: :ok
   end
 

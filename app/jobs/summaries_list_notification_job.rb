@@ -1,5 +1,5 @@
-class HardWorker
-  include Sidekiq::Worker
+class SummariesListNotificationJob < ActiveJob::Base
+  queue_as :default
 
   def perform(room, email)
     summaries = PokerRoom.find(room).summaries.order(created_at: :desc).limit(100).reverse

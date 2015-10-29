@@ -26,6 +26,8 @@ module PgsPoker
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
     config.assets.paths << Rails.root.join("app", "assets", "angular-templates")
     config.assets.paths << Rails.root.join("vendor","assets","bower_components")
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end
 
