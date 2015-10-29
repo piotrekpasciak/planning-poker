@@ -140,17 +140,19 @@ angular.module('ppApp').controller("PokerRoomController", [
         };
 
         $scope.sendSummaryAction = function(email) {
-            if(email) {
+            if(email && $scope.summaries.length > 0) {
                 $scope.emailError = "";
                 SummaryService.sendSummary(id, { email: email }).then(function(successResponse) {
                     $scope.emailResponse = { type: "success", message: "Email was sent successfully!"};
-                    console.log(successResponse.data);
                 }, function(errorResponse){
-                    console.log("Can't send email with summaries");
+                    $scope.emailResponse = { type: "error", message: "Can't send email, please try later!"};
                 })
             }
-            else {
+            else if(!email) {
                 $scope.emailResponse = { type: "error", message: "Email is incorrect!"};
+            }
+            else if(!$scope.summaries.length){
+                $scope.emailResponse = { type: "error", message: "There are no summaries to send!"}
             }
 
         };
