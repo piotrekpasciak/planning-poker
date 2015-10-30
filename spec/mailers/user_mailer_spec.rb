@@ -13,7 +13,7 @@ RSpec.describe UserMailer, type: :mailer do
 
     it "sends summaries list notification email" do
       expect do
-        newsletter_notification.deliver_later
+        newsletter_notification.deliver_now
       end.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
   end

@@ -144,6 +144,7 @@ angular.module('ppApp').controller("PokerRoomController", [
                 $scope.emailError = "";
                 SummaryService.sendSummary(id, { email: email }).then(function(successResponse) {
                     $scope.emailResponse = { type: "success", message: "Email was sent successfully!"};
+                    $scope.userEmail = "";
                 }, function(errorResponse){
                     $scope.emailResponse = { type: "error", message: "Can't send email, please try later!"};
                 })
