@@ -1,5 +1,5 @@
 class SummariesListNotificationJob < ActiveJob::Base
-  queue_as :default
+  queue_as :poker
 
   def perform(room, email)
     summaries = PokerRoom.find(room).summaries.order(created_at: :desc).limit(100).reverse
