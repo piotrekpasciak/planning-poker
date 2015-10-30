@@ -7,6 +7,7 @@ set :deploy_to,       '~/pgs-poker'
 set :deploy_via,      :copy
 
 set :linked_files,    %w{config/database.yml config/secrets.yml .env}
+set :pty,             false
 
 namespace :deploy do
   task :restart do
