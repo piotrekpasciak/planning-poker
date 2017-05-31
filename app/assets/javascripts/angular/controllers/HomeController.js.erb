@@ -1,0 +1,31 @@
+//= require app.js
+
+angular.module('ppApp').controller("HomeController", [
+                '$scope',
+
+        function($scope) {
+            $scope.default_votes = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
+
+            $scope.buttons_number = 11;
+
+            $scope.addButton = function() {
+                $scope.buttons_number ++;
+            };
+
+            $scope.removeButton = function() {
+                if($scope.buttons_number > 0) {
+                    $scope.buttons_number--;
+                }
+            };
+
+            $scope.getNumber = function(num) {
+                return new Array(num);
+            };
+
+            function init(){
+
+            }
+
+            init();
+        }
+]);

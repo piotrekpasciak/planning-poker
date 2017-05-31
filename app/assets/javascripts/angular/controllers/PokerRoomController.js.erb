@@ -1,0 +1,187 @@
+//= require app.js
+
+angular.module('ppApp').controller("PokerRoomController", [
+    '$scope', '$rootScope', '$timeout', 'PokerRoomService', 'SummaryService',
+
+    function($scope, $rootScope, $timeout, PokerRoomService, SummaryService) {
+
+        var location = window.location.pathname.split('/');
+        var id = location.pop();
+
+        var socket, host;
+
+        $scope.info  = "";
+
+        $scope.userStory = "";
+
+        $scope.votes = [];
+
+        function onlyUnique(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
+        function connect() {
+            try {
+                socket = new WebSocket(host);
+
+                socket.onopen = function() {
+                    addMessage("OPEN");
+                };
+
+                socket.onclose = function() {
+                    $rootScope.$emit("overlay-show");
+                    addMessage("CLOSED");
+                };
+
+                socket.onmessage = function(msg) {
+                    msg = JSON.parse(msg.data);
+                    console.log(msg);
+                    if(msg.type == "info") {
+                        //Information about completion of connecting to websocket server
+                    }
+                    else if(msg.type == "room_status") {
+                        $scope.$apply(function(){
+                            $scope.onlineUsers = msg.users;
+                            $scope.current_user = msg.new_name;
+                        });
+                        updateUserStory(msg.message);
+                    }
+                    else if(msg.type == "users_list") {
+                        $scope.$apply(function(){
+                            $scope.onlineUsers = msg.users;
+                        });
+                    }
+                    else if(msg.type == "update_story") {
+                        updateUserStory(msg.message);
+                    }
+                    else if(msg.type == "update_vote") {
+                        updateVote(msg);
+                    }
+                    else if(msg.type == "summary") {
+                        var summary = { summary: { story: $scope.userStory, votes: msg.message, created_at: Date.now(), poker_room_id: id }};
+                        if(msg.owner){
+                            SummaryService.createSummary(id, summary).then(function(successResponse){
+                                        console.log(successResponse.data);
+                                        $scope.summaries.push(successResponse.data);
+                                    }, function(errorResponse){
+                                        console.log("Cannot get summaries");
+                                    }
+                            )
+                        }
+                        else {
+                            $scope.summaries.push(summary.summary);
+                        }
+
+                    }
+                }
+            } catch(exception) {
+                $rootScope.$emit("overlay-show");
+                addMessage("Error: " + exception);
+            }
+
+        }
+
+        function addMessage(msg) {
+            $scope.$apply(function() {
+                $scope.info = msg;
+            });
+        }
+
+        function updateUserStory(msg) {
+            $scope.$apply(function () {
+               $scope.userStory = msg;
+            });
+        }
+
+        function updateVote(msg){
+            $scope.$apply(function(){
+                user = _.find($scope.onlineUsers, function(user){ return user.name == msg.name; });
+                _.extend(user, {name: msg.name, vote: msg.message })
+            });
+        }
+
+        function getSummaries(id){
+            $scope.summaries = SummaryService.getSummaries(id).then(function(successResponse){
+                $scope.summaries = successResponse.data.summaries;
+            }, function(errorResponse){
+                console.log("Couldn't get summaries")
+            })
+        }
+
+        $scope.sendMessage = function(type, text, room, name) {
+            if((type == "user_story" || type == "clear_votes") && !text) {
+                $scope.error = "User story cannot be empty!"
+            }
+            else if((type == "user_story" || type == "clear_votes")&& text.length > 150) {
+                $scope.error = "User story cannot be longer than 150 characters!"
+            }
+            else {
+                $scope.error = false;
+                var message = {
+                    type: type,
+                    text: text,
+                    room: room,
+                    name: name
+                };
+
+                message = JSON.stringify(message);
+
+                if(message.text == '') {
+                    addMessage("Please Enter a Message");
+                    return;
+                }
+
+                try {
+                    socket.send(message);
+                } catch(exception) {
+                    console.log("Error occurred while connecting to websockets!")
+                }
+            }
+        };
+
+        $scope.sendSummaryAction = function(email) {
+            if(email && $scope.summaries.length > 0) {
+                $scope.emailError = "";
+                SummaryService.sendSummary(id, { email: email }).then(function(successResponse) {
+                    $scope.emailResponse = { type: "success", message: "Email was sent successfully!"};
+                    $scope.userEmail = "";
+                }, function(errorResponse){
+                    $scope.emailResponse = { type: "error", message: "Can't send email, please try later!"};
+                })
+            }
+            else if(!email) {
+                $scope.emailResponse = { type: "error", message: "Email is incorrect!"};
+            }
+            else if(!$scope.summaries.length){
+                $scope.emailResponse = { type: "error", message: "There are no summaries to send!"}
+            }
+
+        };
+
+        $scope.disconnect = function() {
+          socket.close();
+        };
+
+        initializePokerRoomAction = function(id) {
+            PokerRoomService.getPokerRoom(id).then(function(successResponse) {
+                        $scope.poker_room = successResponse.data.poker_room;
+                        $scope.current_user = $scope.poker_room.user_name;
+                        $scope.votes = $scope.poker_room.votes.filter( onlyUnique );
+
+                        host =  "<%= ENV["WEBSOCKET_PATH"] %>" + "/?room=" + id + "&name=" + $scope.current_user
+                                + "&user_story=" + $scope.poker_room.user_story;
+                        connect();
+                },
+                function(errorResponse) {
+                    console.log("Error");
+                });
+        };
+
+        function init() {
+            initializePokerRoomAction(id);
+            getSummaries(id);
+        }
+
+        init();
+    }
+]);

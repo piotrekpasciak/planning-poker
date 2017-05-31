@@ -1,7 +1,72 @@
+<overlay></overlay>
+
 <div ng-controller="PokerRoomController" class="container home-page">
   <div class="row home-page-wrapper">
-    <h3>Poker Room</h3>
-    <pre>{{poker_room}}</pre>
+    <div class="col-lg-7 col-md-7 col-sm-7">
+      <h3 class="pgs-small-header">Poker Room number {{poker_room.id}}</h3>
+      <div id="user-story-form" class="user-story-form">
+
+        <div ng-if="error" class="alert alert-danger custom-box error-box" role="alert">
+          <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message">{{error}}</span></p>
+        </div>
+
+        <div class="user-story-input-wrapper">
+          <input my-maxlength="150" ng-model="userStory" ng-class="{'red-border': error}" type="text" enter-pressed="sendMessage('user_story', userStory, poker_room.id)" id="user-story" class="form-control pgs-input user-story-input">
+
+          <button ng-click="sendMessage('user_story', userStory, poker_room.id)" id="send" class="btn btn-primary pgs-button send-story-button">Send</button>
+        </div>
+        <div class="votes-actions-wrapper">
+          <button ng-click="sendMessage('show_votes')" id="show-all" class="btn pgs-button-2">Show all votes</button>
+          <button ng-click="sendMessage('clear_votes', userStory)" id="clear-all" class="btn pgs-button-2">New round</button>
+        </div>
+        <div class="form-votes-container">
+          <div ng-repeat="vote in votes" class="form-votes-wrapper">
+            <button ng-click="sendMessage('vote', vote, poker_room.id, current_user)" class="pgs-button pgs-vote-button">{{vote}}</button>
+          </div>
+        </div>
+    </div>
+
+      <div>
+        <h3 class="pgs-small-header">Summary:</h3>
+        <ul class="summary-list">
+          <li ng-repeat="summary in summaries.slice().reverse()"  ng-click="summary.visible = !summary.visible" class="list-without-padding summary-list-element pgs-orange-cell">
+            <p class="summary-list-heading"><span class="summary-text">{{summary.story}}</span><span class="pull-right">{{summary.created_at  | date:'mediumTime' }}</span></p>
+            <ul ng-if="summary.visible" ng-repeat="vote in summary.votes" class="summary-inner-list">
+              <li ng-class="{'green-text': current_user == vote.name}" class="pgs-list-element">{{vote.name}} : {{vote.vote}}</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-md-5 col-sm-5">
+      <h3 class="pgs-small-header text-center">Send summary:</h3>
+      <div ng-if="emailResponse" ng-class="{'error-box' : emailResponse.type == 'error', 'success-box' :emailResponse.type == 'success' }" class="alert alert-danger custom-box" role="alert">
+        <p><i class="fa fa-exclamation-triangle"></i><span class="user-error-message">{{emailResponse.message}}</span></p>
+      </div>
+      <div class="user-story-input-wrapper">
+        <input my-maxlength="100" ng-model="userEmail" ng-class="{'red-border': emailError}" type="email" id="user-email" class="form-control pgs-input user-story-input">
+        <button ng-click="sendSummaryAction(userEmail)" id="send" class="btn btn-primary pgs-button send-story-button">Send</button>
+      </div>
+
+      <h3 class="pgs-small-header text-center">Online users list:</h3>
+      <ul ng-repeat="user in onlineUsers">
+        <li ng-class="{'green-text': current_user == user.name}" class="pgs-list-element">{{user.name}} : <span ng-if="user.vote == '✓'"><i class="fa fa-check"></i></span><span ng-if="user.vote != '✓'">{{user.vote}}</span></li>
+      </ul>
+    </div>
+
+    <div class="connection-status-container">
+        <div class="container">
+          <div class="col-lg-5 col-md-5 col-sm-5 col-lg-offset-7 col-md-offset-7 col-sm-offset-7 text-center">
+            <div class="connection-status-wrapper">
+              <div ng-switch="info" class="logs-wrapper">
+                <span ng-switch-when="OPEN" class="pgs-green-cell">Connection status: <strong>{{ info }}</strong></span>
+                <span ng-switch-when="CLOSED" class="pgs-red-cell">Connection status: <strong>{{ info }}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
   </div>
 </div>
-

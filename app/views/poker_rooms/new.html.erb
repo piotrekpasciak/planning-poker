@@ -1,11 +1,23 @@
 <div ng-controller="HomeController" class="container home-page">
-  <div class="row home-page-wrapper">
+  <div class="row row-centered">
+    <div class="col-lg-6 col-md-6 col-sm-8 col-centered">
+    <h1 class="container pgs-header pgs-header-home">Poker room:</h1>
+    <%= form_for @poker_room, url: {action: "create"}, html: {class: "poker-room-form", id: "poker-room-form"} do |f| %>
+        <%= f.label(:user_story, "User story for room:", class: "pgs-label") %>
+        <%= f.text_field :user_story, class: "form-control pgs-input" %>
 
-    <form id="create" class="poker-room-form">
-      <div class="form-group field">
-        <button ng-click="createPokerRoom()" class="btn btn-primary poker-room-button" id="create-room">Create Room</button>
-      </div>
-    </form>
-
+        <%= f.label(:votes, "Votes for room:", class: "pgs-label") %>
+        <div class="form-votes-container">
+          <div ng-repeat="i in getNumber(buttons_number) track by $index" class="form-votes-wrapper">
+            <input multiple="multiple" value="{{default_votes[$index]}}" id="votes-input" class="form-control poker-room-vote-input pgs-input" type="text" name="poker_room[votes][]">
+          </div>
+        </div>
+        <div class="form-buttons-wrapper">
+            <div ng-click="addButton()" class="btn btn-primary pgs-button form-votes-button"><i class="fa fa-plus"></i></div>
+            <div ng-click="removeButton()" class="btn btn-primary pgs-button form-votes-button"><i class="fa fa-minus"></i></div>
+            <%= f.submit "Create Room", class: "btn btn-primary pull-right pgs-button form-votes-button" %>
+        </div>
+    <% end %>
+    </div>
   </div>
 </div>
